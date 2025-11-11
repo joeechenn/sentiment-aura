@@ -1,22 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Controls } from './components/Controls';
 import { TranscriptDisplay } from './components/TranscriptDisplay';
+import { KeywordsDisplay } from './components/KeywordsDisplay';
+import { DeepgramService } from './services/DeepgramService';
+import { analyzeSentiment } from './services/BackendService';
 import './App.css';
 
 function App() {
   const [isRecording, setIsRecording] = useState(false);
-  const [transcript, setTranscript] = useState(
-    "I'm feeling great today. This is a test of live transcript display. The weather is amazing and I'm excited about this project."
-  )
+  const [transcript, setTranscript] = useState('');
+  const [sentiment, setSentiment] = useState<number>(0);
+  const [keywords, setKeywords] = useState<string[]>([]);
 
-  const handleStart = () => {
+  const deepgramService = useRef(new DeepgramService());
+  const deepgramApiKey = process.env.REACT_APP_DEEPGRAM_API_KEY || '';
+
+  const handleStart = async () => {
+
+    if (!deepgramApiKey) {
+      alert('Deepgram API key is missing.')
+      return;
+    }
+
     setIsRecording(true);
-    console.log('Recording started');
+    setTranscript('');
+    
+    try {
+      await deepgramService.current.startTranscription(
+        deepgramApiKey,
+        async (text: string, isFinal: boolean) => {
+          
+          setTranscript((prev) => {
+            if (isFinal) {
+              return prev + ' ' + text;
+            }
+            else {
+              return prev + ' ' + text;
+            }
+          });
+
+          if (isFinal && text.trim() !== '') {
+            try {
+              const sentimentData = await analyzeSentiment(text);
+              setSentiment(sentimentData.sentiment);
+              setKeywords(sentimentData.keywords);
+            }
+            catch (error) {
+              console.error('Failed to analyze sentiment:', error);
+            }
+          }
+        },
+        (error: Error) => {
+          console.error('Transcription error:', error);
+          alert(`Error: ${error.message}`);
+          handleStop();
+        }
+      );
+    }
+    catch (error) {
+      console.error('Failed to start transcription:', error);
+      setIsRecording(false);
+    }
   };
 
   const handleStop = () => {
+    deepgramService.current.stopTranscription();
     setIsRecording(false);
-    console.log('Recording stopped');
   };
 
   return (
@@ -29,6 +78,14 @@ function App() {
       onStart={handleStart}
       onStop={handleStop}
       />
+      <div className="fixed bottom-4 left-4 text-white text-sm bg-black bg-opacity-50 p-2 rounded">
+        <p>
+          Sentiment: {sentiment.toFixed(2)}
+        </p>
+        <p>
+          Keywords: {keywords.length}
+        </p>
+      </div>
     </div>
   )
 }

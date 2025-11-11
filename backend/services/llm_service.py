@@ -36,7 +36,7 @@ class SentimentAnalyzer:
         text: The transcribed text to analyze
       
       Returns:
-      SentimentResult: {"sentiment": float, "keywords": List[str]}
+        SentimentResult: {"sentiment": float, "keywords": List[str]}
       """
       
       try:
@@ -61,5 +61,5 @@ class SentimentAnalyzer:
 
 if __name__ == "__main__":
   analyzer = SentimentAnalyzer()
-  test_result = analyzer.analyze("I am so excited about building this new project about analyzing sentiment and keywords from text!")
+  test_result = analyzer.analyze("i am so excited about building this new project about analyzing sentiment and keywords from text!")
   print(f"Analysis result: {test_result}")
