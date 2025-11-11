@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import { Controls } from './components/Controls';
 import { TranscriptDisplay } from './components/TranscriptDisplay';
 import { KeywordsDisplay } from './components/KeywordsDisplay';
 import { DeepgramService } from './services/DeepgramService';
@@ -16,7 +15,7 @@ function App() {
   const deepgramApiKey = process.env.REACT_APP_DEEPGRAM_API_KEY || '';
 
   const handleStart = async () => {
-
+    
     if (!deepgramApiKey) {
       alert('Deepgram API key is missing.')
       return;
@@ -69,23 +68,14 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
-      <div className="fixed inset-0 z-0 bg-black opacity-20"> 
-      </div>
-      <TranscriptDisplay transcript={transcript} />
-      <Controls
-      isRecording={isRecording}
-      onStart={handleStart}
-      onStop={handleStop}
+    <div className="min-h-screen bg-white">
+      <TranscriptDisplay 
+        transcript={transcript}
+        isRecording={isRecording}
+        onStart={handleStart}
+        onStop={handleStop}
       />
-      <div className="fixed bottom-4 left-4 text-white text-sm bg-black bg-opacity-50 p-2 rounded">
-        <p>
-          Sentiment: {sentiment.toFixed(2)}
-        </p>
-        <p>
-          Keywords: {keywords.length}
-        </p>
-      </div>
+      <KeywordsDisplay keywords={keywords} />
     </div>
   )
 }
