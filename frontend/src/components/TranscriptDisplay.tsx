@@ -60,7 +60,7 @@ export function TranscriptDisplay({ transcript, isRecording, onStart, onStop }: 
 
     return (
         <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 w-96 bg-white/20 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/30 overflow-hidden z-10">
-            <div className="bg-white/10 backdrop-blur-sm px-6 py-4 border-b border-white/20">
+            <div className="bg-white/10 backdrop-blur-sm px-2 py-2 border-b border-white/20">
                 <div className="flex items-center gap-2">
                     <h2 className="text-sm font-semibold text-gray-900 ml-2">
                         Live Transcript
@@ -68,7 +68,7 @@ export function TranscriptDisplay({ transcript, isRecording, onStart, onStop }: 
                 </div>
             </div>
             
-            <div ref={scrollRef} className="p-6 max-h-80 overflow-y-auto relative">
+            <div ref={scrollRef} className="p-8 max-h-80 overflow-y-auto relative">
                 <div className="text-gray-900 whitespace-pre-wrap leading-relaxed text-sm pr-16">
                     {segments.length === 0 ? (
                         'Start speaking to see transcript...'
