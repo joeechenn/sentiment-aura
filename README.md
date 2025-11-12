@@ -1,6 +1,6 @@
 # Sentiment Aura
 
-A real-time AI-powered emotional visualization system that transforms spoken words into dynamic, generative art. Built for Memory Machines internship assignment.
+A real-time AI-powered emotional visualization system that transforms spoken words into dynamic, generative art.
 
 ## Overview
 
