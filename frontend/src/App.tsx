@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { TranscriptDisplay } from './components/TranscriptDisplay';
 import { KeywordsDisplay } from './components/KeywordsDisplay';
+import { AuraVisualization } from './components/AuraVisualization';
 import { DeepgramService } from './services/DeepgramService';
 import { analyzeSentiment } from './services/BackendService';
 import './App.css';
@@ -15,7 +16,7 @@ function App() {
   const deepgramApiKey = process.env.REACT_APP_DEEPGRAM_API_KEY || '';
 
   const handleStart = async () => {
-    
+
     if (!deepgramApiKey) {
       alert('Deepgram API key is missing.')
       return;
@@ -69,6 +70,9 @@ function App() {
 
   return (
     <div className="min-h-screen bg-white">
+
+      <AuraVisualization sentiment={sentiment} keywords={keywords} />
+      
       <TranscriptDisplay 
         transcript={transcript}
         isRecording={isRecording}
