@@ -48,7 +48,7 @@ export function AuraVisualization({ sentiment, keywords }: AuraVisualizationProp
     };
 
     const draw = (p5: any) => {
-        p5.fill(255, 255, 255, 1.65);
+        p5.fill(255, 255, 255, 1.7);
         p5.noStroke();
         p5.rect(0, 0, p5.width, p5.height);
 
@@ -65,21 +65,28 @@ export function AuraVisualization({ sentiment, keywords }: AuraVisualizationProp
             b = p5.map(normalizedSentiment, 0.5, 1, 200, 50);
         }
 
-        const flowSpeed = p5.map(Math.abs(sentiment), 0, 1, 1, 1.5);
+        const keywordEnergy = p5.map(keywords.length, 0, 8, 0, 1);
+        const keywordComplexity = 1 + (keywordEnergy * 0.5);
+        const flowSpeed = p5.map(Math.abs(sentiment), 0, 1, 1, 1.5) * (1 + keywordEnergy * 0.3);
+        const dynamicNoiseScale = noiseScale * keywordComplexity;
 
         particlesRef.current.forEach((particle) => {
             particle.prevPos.set(particle.pos);
 
             const angle = p5.noise(
-                particle.pos.x * noiseScale,
-                particle.pos.y * noiseScale,
+                particle.pos.x * dynamicNoiseScale,
+                particle.pos.y * dynamicNoiseScale,
                 p5.frameCount * 0.002 + particle.zOffset
             ) * p5.TWO_PI * noiseStrength * flowSpeed;
 
             const force = p5.createVector(Math.cos(angle), Math.sin(angle));
             force.mult(0.5);
             
-            force.add(p5.createVector(p5.random(-0.3, 0.3), p5.random(-0.3, 0.3)));
+            const jitterAmount = 0.3 * (1 + keywordEnergy * 0.4);
+            force.add(p5.createVector(
+                p5.random(-jitterAmount, jitterAmount), 
+                p5.random(-jitterAmount, jitterAmount)
+            ));
             
             particle.acc.add(force);
 

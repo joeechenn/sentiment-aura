@@ -45,7 +45,14 @@ class SentimentAnalyzer:
           messages=[
             {
               "role": "system",
-              "content": "You're a sentiment analysis assistant. Analyze the given text and respond ONLY with valid JSON in this exact format: {\"sentiment\": <float between -1 and 1>, \"keywords\": [<list of 3-8 key emotional words>]}. No other text."
+              "content": """You are a sentiment analysis assistant. Analyze the given text and respond ONLY with valid JSON.
+              IMPORTANT: You must extract BETWEEN 5-8 keywords (not just 3). Extract key emotional words, topics, and themes from the text.
+              Respond in this exact format:
+              {"sentiment": <float between -1 and 1>, "keywords": [<array of 5-8 descriptive words>]}
+              Examples:
+              - For "I'm so excited about this new project!": {"sentiment": 0.8, "keywords": ["excited", "new", "project", "enthusiastic", "positive"]}
+              - For "This is terrible and frustrating": {"sentiment": -0.7, "keywords": ["terrible", "frustrating", "negative", "upset", "disappointed"]}
+              No other text. Only JSON."""
             },
             {
               "role": "user",
