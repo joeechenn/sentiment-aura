@@ -24,7 +24,8 @@ Sentiment Aura captures live audio, transcribes speech in real-time, analyzes em
 - OpenAI: Sentiment analysis and keyword extraction
 
 ## Prerequisites
-
+- Node.js 16+
+- Python 3.8+
 - API Keys:
   - Deepgram API key
   - OpenAI API key
@@ -47,7 +48,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 # Create .env file and add your API key
-echo "OPENROUTER_API_KEY=your_key_here" >> .env
+echo "OPENROUTER_API_KEY=your_key_here" > .env
 ```
 
 ### Frontend Setup
